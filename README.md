@@ -1,37 +1,72 @@
-# 2-Norm of a matrix
-## Aim
-To write a program to find the 2-norm of the matrix and display the result in two decimal places.
+# Algorithm for QR Decomposition
+## Aim:
+To implement QR decomposition algorithm using the Gram-Schmidt method.
 ## Equipment’s required:
 1.	Hardware – PCs
 2.	Anaconda – Python 3.7 Installation / Moodle-Code Runner
 ## Algorithm:
-	1. Get the input matrix using np.array()
-	2. The 2-Norm of a matrix is given by 
-![norm](./normeqn1.jpg)
-    
-    3. Find the 2-norm of the matrix using np.linalg.norm()
-	4. Print the norm of the matrix in two decimal places. 
+1.	Intialize the matrix Q and u
+2.	The vector u and e is given by
+
+    ![eqn1](./ex4.jpg)
+
+    ![eqn2](./ex6.jpg)
+
+    ![eqn3](./ex3.jpg)
+
+3.	Obtain the Q matrix   
+    ![eqn4](./ex1.jpg)
+4.	Construct the upper triangular matrix R
+    ![eqn5](./ex2.jpg)
+
+
+
 ## Program:
+### Gram-Schmidt Method
 ```
-'''
-Program to find 2-norm of a matrix.
+''' 
+Program to QR decomposition using the Gram-Schmidt method
 Developed by: PRANAVE B
 RegisterNumber: 21500582
 '''
 import numpy as np
-mat = np.array(eval(input()))
-ans = np.linalg.norm(mat,2)
-norm_of_matrix ="{:.2f}".format(ans)
-print(norm_of_matrix)
+def QR_Decomposition(A):
+    n,m = A.shape
+    
+    Q = np.empty((n,n))
+    u = np.empty((n,n))
+    
+    u[:,0] = A[:,0]
+    Q[:,0] = u[:,0]/np.linalg.norm(u[:,0])
+    
+    for i in range(1,n):
+        
+        u[:,i] = A[:,i]
+        for j in range(i):
+            u[:,i] -= (A[:,i] @ Q[:,j]) * Q[:,j]
+            
+        Q[:,i] = u[:,i]/np.linalg.norm(u[:,i])
+        
+    R = np.zeros((n,m))
+    for i in range(n):
+        for j in range(i,m):
+            R[i,j] = A[:,j] @ Q[:,i]
+    print(Q)
+    print(R)
+a = np.array(eval(input()))
+QR_Decomposition(a)
+
 
 
 
 
 
 ```
-## Sample Input and Output:
-![norm1](./input.jpg)
-![](cr.png)
+
+## Output
+
+![](qr.png)
+
 
 ## Result
-Thus the program for 2-norm of a matrix is written and verified.
+Thus the QR decomposition algorithm using the Gram-Schmidt process is written and verified the result.
